@@ -27,7 +27,9 @@ Route::middleware([
     'verified'
 ])->group(function () {
     Route::get('/category/all',[CategoryController::class,'index'])->name('all_category');
+    Route::get('/category/edit/{id}',[CategoryController::class,'edit'])->name('edit');
     Route::post('store',[CategoryController::class,'store'])->name('store.category');
+    Route::post('update/{id}',[CategoryController::class,'update'])->name('update.category');
     //upper category
     Route::get('/dashboard', function () {
         $users = User::all();
