@@ -25,13 +25,12 @@
                         </div>
 
 
-                       <h1 class="d-none">{{ $i = 1 }} </h1>
-                <table class="table">
+                <table class="table text-center">
                     <thead>
                     <tr>
                         <th scope="col">Serial No</th>
-                        <th scope="col">User Id</th>
-                        <th scope="col">Name</th>
+                        <th scope="col">Category Name</th>
+                        <th scope="col">User Name</th>
                         <th scope="col">Created At</th>
                     </tr>
                     </thead>
@@ -39,15 +38,16 @@
 
                     @foreach($categories as $category)
                         <tr>
-                            <td>{{$i++}}</td>
-                            <td>{{$category->user_id}}</td>
+                            <td>{{ $categories->firstItem()+ $loop->index }}</td>
                             <td>{{$category->category_name}}</td>
+                            <td>{{$category->user->name}}</td>
                             <td>{{$category->created_at->diffForHumans() }}</td>
                     </tr>
                     @endforeach
                     </tbody>
 
                 </table>
+                        {{$categories->links() }}
 
                     </div>
                 </div>

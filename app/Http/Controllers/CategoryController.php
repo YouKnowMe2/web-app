@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class CategoryController extends Controller
 {
     public function index(){
-        $categories = Category::orderBy('user_id')->get();
+        $categories = Category::orderBy('user_id')->paginate(5);
             return view('admin.category.index',[
                 'categories' => $categories
             ]);
@@ -24,11 +24,16 @@ class CategoryController extends Controller
             'category_name.max' => 'Category limit has been reached'
         ]);
 
-        Category::insert([
-            'category_name' => $request->category_name,
-            'user_id' => Auth::user()->id,
-            'created_at' => Carbon::now()
-        ]);
+//        Category::insert([
+//            'category_name' => $request->category_name,
+//            'user_id' => Auth::user()->id,
+//            'created_at' => Carbon::now()
+//        ]);
+        $category = new Category();
+        $category->category_name= $request->category_name;
+        $category->user_id= Auth::user()->id;
+        $category->save();
+
 
         return redirect()->back()->with('success','Your category has been added successfully');
     }
