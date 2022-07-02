@@ -45,7 +45,7 @@
                             <td>{{$category->created_at->diffForHumans() }}</td>
                             <td>
                                 <a href="{{ url('category/edit/'.$category->id) }}" class="btn btn-info">Edit</a>
-                                <a href="" class="btn btn-danger">Delete</a>
+                                <a href="{{route('category.softDelete',$category->id)}}" class="btn btn-danger">Move To Trash</a>
                             </td>
                     </tr>
                     @endforeach
@@ -82,6 +82,53 @@
                 <!--End of Form of Category-->
 
             </div>
+
+            <!--Start of Trash Part-->
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                Trashed Category
+                            </div>
+
+
+                            <table class="table text-center">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Serial No</th>
+                                    <th scope="col">Category Name</th>
+                                    <th scope="col">User Name</th>
+                                    <th scope="col">Created At</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                @foreach($trashCat as $category)
+                                    <tr>
+                                        <td>{{ $trashCat->firstItem()+ $loop->index }}</td>
+                                        <td>{{$category->category_name}}</td>
+                                        <td>{{$category->user->name}}</td>
+                                        <td>{{$category->created_at->diffForHumans() }}</td>
+                                        <td>
+                                            <a href="" class="btn btn-danger">Permanently Delete</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+
+                            </table>
+                            {{$trashCat->links() }}
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <!--End of Trash Part -->
 
         </div>
 

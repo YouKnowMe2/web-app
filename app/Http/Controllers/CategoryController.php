@@ -11,8 +11,10 @@ class CategoryController extends Controller
 {
     public function index(){
         $categories = Category::orderBy('user_id')->paginate(5);
-            return view('admin.category.index',[
-                'categories' => $categories
+        $trashCat = Category::onlyTrashed()->latest()->paginate(3);
+        return view('admin.category.index',[
+                'categories' => $categories,
+                'trashCat' => $trashCat,
             ]);
     }
     public function store(Request $request){
@@ -24,11 +26,6 @@ class CategoryController extends Controller
             'category_name.max' => 'Category limit has been reached'
         ]);
 
-//        Category::insert([
-//            'category_name' => $request->category_name,
-//            'user_id' => Auth::user()->id,
-//            'created_at' => Carbon::now()
-//        ]);
         $category = new Category();
         $category->category_name= $request->category_name;
         $category->user_id= Auth::user()->id;
@@ -49,5 +46,10 @@ class CategoryController extends Controller
             'category_name' => $request->category_name
         ]);
         return redirect()->route('all_category')->with('success','Category has been updated');
+    }
+    public function softDelete($id){
+        $category = Category::findOrFail($id);
+        $category->delete();
+        return redirect()->back()->with('success','Your category has been Trashed successfully');
     }
 }
