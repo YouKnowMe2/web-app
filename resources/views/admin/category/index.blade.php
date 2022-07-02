@@ -16,7 +16,7 @@
                         @if(session('success'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             <strong>Well Done!</strong> {{session('success')}}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <button type="button" class="btn-close text-black" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
                         <!-- End of alert Tag -->
@@ -112,7 +112,8 @@
                                         <td>{{$category->user->name}}</td>
                                         <td>{{$category->created_at->diffForHumans() }}</td>
                                         <td>
-                                            <a href="" class="btn btn-danger">Permanently Delete</a>
+                                            <a href="{{route('category.restore',$category->id)}}" class="btn btn-primary">Restore</a>
+                                            <a href="{{route('category.delete',$category->id)}}" class="btn btn-danger">Permanently Delete</a>
                                         </td>
                                     </tr>
                                 @endforeach
