@@ -45,6 +45,10 @@ Route::middleware([
     Route::post('/store/brand',[BrandController::class,'store'])->name('store.brand');
     Route::post('update/{id}',[BrandController::class,'update'])->name('update.brand');
     Route::get('/brand/delete/{id}',[BrandController::class,'delete'])->name('delete.brand');
+    //multi pic section
+    Route::get('/multi',[BrandController::class,'Multipic'])->name('multi.image');
+    Route::post('/store/images',[BrandController::class,'store_images'])->name('store.images');
+
 
     //end of Brand
 

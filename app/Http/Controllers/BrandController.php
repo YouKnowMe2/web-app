@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Brand;
+use App\Models\Multiplepic;
 use Illuminate\Http\Request;
+use Image;
 
 class BrandController extends Controller
 {
@@ -25,16 +27,21 @@ class BrandController extends Controller
             ]);
         //image file upload
         $brand_image = $request->file('brand_image');
-        $name_gen = hexdec(uniqid());
-        $img_ext =strtolower($brand_image->getClientOriginalExtension());
-        $img_name = $name_gen.'.'.$img_ext;
-        $up_location = 'image/brand/';
-        $last_img = $up_location.$img_name;
-        $brand_image->move($up_location,$last_img);
+        //intervation package used
+        $name_gen = hexdec(uniqid()).'.'.$brand_image->getClientOriginalExtension();
+        Image::make($brand_image)->resize(300,200)->save('image/brand/'.$name_gen);
+        //intervation end
+
+//        $name_gen = hexdec(uniqid());
+//        $img_ext =strtolower($brand_image->getClientOriginalExtension());
+//        $img_name = $name_gen.'.'.$img_ext;
+//        $up_location = 'image/brand/';
+//        $last_img = $up_location.$img_name;
+//        $brand_image->move($up_location,$last_img);
         //End of Image Upload
         $brand = new Brand();
         $brand->brand_name = $request->brand_name;
-        $brand->brand_image = $img_name;
+        $brand->brand_image = $name_gen;
         $brand->save();
 
         return redirect()->back()->with('success','Your Brand Has been created successfully');
@@ -97,5 +104,32 @@ class BrandController extends Controller
         $brand->delete();
 
         return redirect()->back()->with('success','Your Brand Has been Deleted successfully');
+    }
+    //It's for Multi image Methods
+    public function Multipic(){
+        $images = Multiplepic::all();
+        return view('admin.multipic.index',[
+            'images' => $images
+        ]);
+    }
+    public function store_images(Request $request){
+
+        $image = $request->file('images');
+
+
+        foreach($image as $multi_img){
+
+
+        //intervation package used
+        $name_gen = hexdec(uniqid()).'.'.$multi_img->getClientOriginalExtension();
+        Image::make($multi_img)->resize(300,300)->save('image/multi/'.$name_gen);
+        //intervation end
+
+            $multi = new Multiplepic();
+        $multi->image = 'image/multi/'.$name_gen;
+        $multi->save();
+        }
+        //end of foreach
+        return redirect()->back()->with('success','Your Image Has been Uploaded successfully');
     }
 }
